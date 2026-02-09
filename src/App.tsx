@@ -1,27 +1,34 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import { useState, useEffect } from 'react';
+import Hero from './components/Hero';
+import ProofSection from './components/ProofSection';
+import DiscoveryCard from './components/DiscoveryCard';
+import Testimonial from './components/Testimonial';
+import Footer from './components/Footer';
+import LeadPopup from './components/LeadPopup';
+import SocialProofPopup from './components/SocialProofPopup';
 
-const queryClient = new QueryClient();
+function App() {
+  const [showPopup, setShowPopup] = useState(false);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 10000); // 10 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-white overflow-x-hidden">
+      <Hero />
+      <ProofSection />
+      <DiscoveryCard />
+      <Testimonial />
+      <Footer />
+      <LeadPopup show={showPopup} onClose={() => setShowPopup(false)} />
+      <SocialProofPopup />
+    </div>
+  );
+}
 
 export default App;
